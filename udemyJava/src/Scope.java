@@ -1,4 +1,4 @@
-package udemyJava;
+
 
 public class Scope {
 	

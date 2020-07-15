@@ -1,4 +1,5 @@
-package udemyJava;
+
+
 
 public class Conditionals {
 	public static void main(String[] args) {
@@ -9,7 +10,7 @@ public class Conditionals {
 		boolean sayHello = false;
 		boolean sayHey = false;
 		
-		//only the first statement to evalute to true gets executed
+		//only the first statement to evaluate to true gets executed
 		if(sayHello) {
 			System.out.println("Hello!");
 		}
