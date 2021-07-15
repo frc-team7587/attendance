@@ -4,9 +4,10 @@ import javax.mail.Authenticator;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.Message;
-
-// import javax.mail.internet.MimeMessage;
-// import javax.mail.internet.InternetAddress;
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 // import java.util.logging.Level;
 // import java.util.logging.Logger;
 
@@ -24,7 +25,7 @@ public class EmailSender {
         this.fromEmail = fromEmail; 
     }
 
-public boolean send(String toEmail, String subject, String body) {
+public boolean send(String toEmail, String subject, String body) throws AddressException, MessagingException {
 
 	//This?
 	/*
@@ -40,8 +41,20 @@ public boolean send(String toEmail, String subject, String body) {
 	 * this.body = body;
 	 */
 	
+//	try {
+		Message message = new MimeMessage(session);
+		message.setFrom(new InternetAddress(fromEmail)); 
+		message.setRecipient(Message.RecipientType.TO, new InternetAddress(toEmail)); //can also be RecipientType.BCC or RecipientType.CC
+		message.setSubject(subject);                                 			   	//Email subject
+		message.setText(body);    								    				 //Email body
+//	} catch (Exception ex) {
+//        Logger.getLogger (EmailSender.class.getName()).log(Level.SEVERE, null, ex);
+///    }  
 	
-    }
+	Transport.send(message);
+	return true;
+	
+}
 
 public static Builder builder() {
     return new Builder();
@@ -90,7 +103,6 @@ public static class Builder {
     }
 
     public EmailSender build() {
-        //create session
         Properties properties = new Properties();
     
             properties.put("mail.smtp.auth", auth);                        
