@@ -8,8 +8,8 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
-// import java.util.logging.Level;
-// import java.util.logging.Logger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class EmailSender {
 
@@ -19,41 +19,24 @@ public class EmailSender {
 //    private final String subject;
 //    private final String body;
     
-    
-    EmailSender (Session session, String fromEmail) { 
+    EmailSender (Session session, String fromEmail) {   //constructor (named the same as class)
         this.session = session;
-        this.fromEmail = fromEmail; 
-    }
+        this.fromEmail = fromEmail;  //*the fromEmail and session are never changed. On the other hand, toEmail, subject, and body are different every time
+    }                                //*we send an email, so we don't need to equate it to anything in the beginning
 
-public boolean send(String toEmail, String subject, String body) throws AddressException, MessagingException {
-
-	//This?
-	/*
-	 * String recipient = toEmail;
-	 * String emailSubject = subject;
-	 * String emailBody = body;
-	 */
+public boolean send(String toEmail, String subject, String body) {
 	
-	//or this?
-	/*
-	 * this.toEmail = toEmail;
-	 * this.subject = subject;
-	 * this.body = body;
-	 */
-	
-//	try {
+    try {
 		Message message = new MimeMessage(session);
 		message.setFrom(new InternetAddress(fromEmail)); 
 		message.setRecipient(Message.RecipientType.TO, new InternetAddress(toEmail)); //can also be RecipientType.BCC or RecipientType.CC
 		message.setSubject(subject);                                 			   	//Email subject
-		message.setText(body);    								    				 //Email body
-//	} catch (Exception ex) {
-//        Logger.getLogger (EmailSender.class.getName()).log(Level.SEVERE, null, ex);
-///    }  
-	
-	Transport.send(message);
+        message.setText(body); 
+        Transport.send(message);   								    				 //Email body
+	} catch (Exception ex) {
+        Logger.getLogger (EmailSender.class.getName()).log(Level.SEVERE, null, ex);
+    }  
 	return true;
-	
 }
 
 public static Builder builder() {
@@ -87,9 +70,9 @@ public static class Builder {
         return this;
         }
 
-    public Builder setHost(String hostString) {
+    public Builder setHost(String hostString) { //smtp.gmail.com for Gmail
         host = hostString;
-        return this; //so that it'll return when u call this
+        return this; 
     }
 
     public Builder setEmail(String userEmail) {
